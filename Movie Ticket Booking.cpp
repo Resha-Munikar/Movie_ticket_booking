@@ -3,9 +3,10 @@
 #include<conio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<unistd.h>//for sleep function
 int main()
 {
-	int ch;
+	int ch,choice;
 	FILE *fp;
 	label:
 	//displaying the menu
@@ -43,6 +44,20 @@ int main()
 			if((strcmp(uname,un)==0)&&(strcmp(pwd,pw)==0))
 			{
 				printf("\n\tLogin Successful!!!");
+				sleep(4);
+				system ("cls");
+				//Displaying the admin's portal
+				printf("\nPress 1 to add movie");
+				printf("\nPress 2 to show movie list");
+				printf("\nPress 3 to delete movie");
+				printf("\nPress 4 to edit movie details");
+				printf("\nPress 5 to exit");
+				printf("\n\nEnter your choice : ");
+				scanf("%d",&choice);
+				switch(choice)
+				{
+					
+				}
 			}
 			else
 			{
@@ -54,12 +69,13 @@ int main()
 				{
 					if(x=='y'||x=='Y')
 					{
+						system("cls");
 						goto flag;
 					}
 					else
 					{
 						exit(0);
-					}
+					}	
 				}
 			}
 		break;
@@ -70,8 +86,7 @@ int main()
 			printf("\nInvalid input.");
 			printf("\nEnter between 1-5\n\n");
 			goto label;
-		break;	
-			
+		break;			
 	}
 	return 0;
 }
