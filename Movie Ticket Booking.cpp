@@ -1,13 +1,18 @@
-//Movie ticket booking using C
+ //Movie ticket booking using C
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<unistd.h>//for sleep function
+struct record{
+	char name[70];
+	int code;
+	int price;
+}temp;
 int main()
 {
 	int ch,choice;
-	FILE *fp;
+	FILE *fp,*fs;
 	label:
 	//displaying the menu
 	printf("\t************************************\n");
@@ -79,6 +84,21 @@ int main()
 				}
 			}
 		break;
+		case 2:
+			fs=fopen("Details.txt","r");
+			if(fs==NULL)
+			{
+				printf("\nError! File not found");
+			}
+			fread(&temp,sizeof(temp),1,fs);
+			printf("\n");
+			printf("The list of movies available are:");
+			printf("%s\n",temp.name);
+			printf("%d\n",temp.code);
+			printf("%d\n",temp.price);
+			printf("\n");
+			break;
+			fclose(fs);
 		case 5:
 			exit(0);
 		break;
@@ -88,5 +108,7 @@ int main()
 			goto label;
 		break;			
 	}
+	fclose(fp);
+	fclose(fs);
 	return 0;
 }
