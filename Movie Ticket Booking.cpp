@@ -5,13 +5,14 @@
 #include<string.h>
 #include<unistd.h>//for sleep function
 struct record{
-	char name[70];
+	char name[20];
 	int code;
 	int price;
-}temp;
+}temp,addlist[50];
 int main()
 {
-	int ch,choice;
+	int ch;
+	char choice;
 	FILE *fp,*fs;
 	label:
 	//displaying the menu
@@ -34,6 +35,7 @@ int main()
 			if(fp==NULL)
 			{
 				printf("\nError! File not found");
+				exit(0);
 			}
 			char uname[30],pwd[25],un[30],pw[25];
 			char x;
@@ -52,16 +54,45 @@ int main()
 				sleep(4);
 				system ("cls");
 				//Displaying the admin's portal
-				printf("\nPress 1 to add movie");
-				printf("\nPress 2 to show movie list");
-				printf("\nPress 3 to delete movie");
-				printf("\nPress 4 to edit movie details");
-				printf("\nPress 5 to exit");
+				printf("\nPress A. to add movie");
+				printf("\nPress B. to show movie list");
+				printf("\nPress C. to delete movie");
+				printf("\nPress D. to edit movie details");
+				printf("\nPress E. to exit");
 				printf("\n\nEnter your choice : ");
-				scanf("%d",&choice);
+				scanf("%c",&choice);
 				switch(choice)
 				{
-					
+					case 'A':
+						int i=0,n;
+						/*fs=fopen("Details.txt","a+");
+						if(fs==NULL)
+						{
+								printf("\nError! File not found");
+						}
+						//fseek(fs,20,SEEK_END);*/
+						retry:
+						fflush(stdin);
+						printf("How many records do you want to add? \n");
+						scanf("%d",n);
+						if(n>10)
+						{
+							printf("Sorry you can only add upto 10 records at a time.\n");
+							printf("Please try again");
+							system("cls");
+							goto retry;
+						}
+						for(i=0;i<n;i++)
+						{
+							printf("Enter movie name: ");
+							gets(addlist[i].name);
+							printf("Enter movie code: ");
+							scanf("%d",addlist[i].code);
+							printf("Enter movie ticket: ");
+							scanf("%d",addlist[i].price);
+						}
+						//&addlist,sizeof (struct record),1,fs);
+						break;
 				}
 			}
 			else
@@ -90,7 +121,7 @@ int main()
 			{
 				printf("\nError! File not found");
 			}
-			fread(&temp,sizeof(temp),1,fs);
+			fread(&temp,sizeof(struct record),1,fs);
 			printf("\n");
 			printf("The list of movies available are:");
 			printf("%s\n",temp.name);
