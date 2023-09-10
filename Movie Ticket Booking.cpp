@@ -11,7 +11,7 @@ struct record{
 }temp,addlist[50];
 int main()
 {
-	int ch;
+	int ch,i,n;
 	char choice;
 	FILE *fp,*fs;
 	label:
@@ -64,17 +64,17 @@ int main()
 				switch(choice)
 				{
 					case 'A':
-						int i=0,n;
-						/*fs=fopen("Details.txt","a+");
+					
+						fs=fopen("Details.txt","a+");
 						if(fs==NULL)
 						{
 								printf("\nError! File not found");
 						}
-						//fseek(fs,20,SEEK_END);*/
+						//fseek(fs,SEEK_END);
 						retry:
 						fflush(stdin);
 						printf("How many records do you want to add? \n");
-						scanf("%d",n);
+						scanf("%d",&n);
 						if(n>10)
 						{
 							printf("Sorry you can only add upto 10 records at a time.\n");
@@ -84,14 +84,16 @@ int main()
 						}
 						for(i=0;i<n;i++)
 						{
+							fflush(stdin);
 							printf("Enter movie name: ");
 							gets(addlist[i].name);
 							printf("Enter movie code: ");
-							scanf("%d",addlist[i].code);
+							scanf("%d",&addlist[i].code);
 							printf("Enter movie ticket: ");
-							scanf("%d",addlist[i].price);
+							scanf("%d",&addlist[i].price);
+							printf("\n");
 						}
-						//&addlist,sizeof (struct record),1,fs);
+						fwrite(&addlist,sizeof (struct record),1,fs);
 						break;
 				}
 			}
@@ -121,15 +123,18 @@ int main()
 			{
 				printf("\nError! File not found");
 			}
-			fread(&temp,sizeof(struct record),1,fs);
-			printf("\n");
+		
 			printf("The list of movies available are:");
+			for(i=0;i<n;i++)
+			{
+			printf("\n");
 			printf("%s\n",temp.name);
 			printf("%d\n",temp.code);
 			printf("%d\n",temp.price);
 			printf("\n");
+			fread(&temp,sizeof(struct record),1,fs);
+			}
 			break;
-			fclose(fs);
 		case 5:
 			exit(0);
 		break;
