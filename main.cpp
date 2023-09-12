@@ -15,7 +15,8 @@ int ch = 0;
 int oldtotal;
 char choice;
 char re_add[1];
-
+int search;
+int found;
 int i = 0;
 int n = 0;
 
@@ -57,9 +58,11 @@ label:
 		// comparing the username and password given by the user
 		if ((strcmp(uname, un) == 0) && (strcmp(pwd, pw) == 0))
 		{
-			printf("\n\tLogin Successful!!!");
-			sleep(2);
+			printf("\n\t\tLogging in . . . .");
+			sleep(3);
 			system("cls");
+			printf("\n\t\tLogin successful!!!");
+			printf("\n");
 		// Displaying the admin's portal
 		retry:
 			printf("\n");
@@ -98,7 +101,7 @@ label:
 				fwrite(&addlist, sizeof(struct record), 1, fs);
 				fclose(fs);
 				printf("\nMovie added successfully.");
-
+				printf("\n");
 				printf("\nDo you want to add another movie?[Y/N]");
 				strlwr(re_add);
 				scanf("%c", &re_add);
@@ -134,6 +137,51 @@ label:
 				fclose(fs);
 				fflush(stdin);
 				getchar();
+				system("cls");
+				goto retry;
+				break;
+			case 'C':
+				system("cls");
+				printf("\nEnter the code of movie you want to delete : ");
+				scanf("%d",&search);
+				fp=fopen("Details.txt","r");
+				{
+					if(fp==NULL)
+					{
+						printf("\nFile not found.");
+					}
+				}
+				fs=fopen("Temp.txt","w+");
+				{
+					if(fs==NULL)
+					{
+						printf("\nFile not found.");
+					}
+				}
+				while(fread(&addlist,sizeof(struct record),1,fp))
+				{
+					if(addlist.code!=search)
+					{
+						fwrite(&addlist, sizeof(struct record), 1, fs);
+					}
+					else
+					{
+						found=1;
+					}
+				}
+				fclose(fp);
+				fclose(fs);
+				remove("Details.txt");
+				rename("temp.txt","Details.txt");
+				if(found==1)
+				{
+					printf("\nMovie with code %d is deleted successfully.",search);
+				}
+				else
+				{
+					printf("\nMovie with code %d not found.",search);
+				}
+				sleep(2);
 				system("cls");
 				goto retry;
 				break;
