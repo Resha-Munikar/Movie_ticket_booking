@@ -179,7 +179,7 @@ void add_movie()
 {
 	FILE *fs;
 re_movie:
-	fs = fopen("Details.txt", "w+");
+	fs = fopen("Details.txt", "rS+");
 	if (fs == NULL)
 	{
 		printf("\nError! File not found");
