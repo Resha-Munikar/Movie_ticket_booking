@@ -179,7 +179,7 @@ void add_movie()
 {
 	FILE *fs;
 re_movie:
-	fs = fopen("Details.txt", "rS+");
+	fs = fopen("Details.txt", "r+");
 	if (fs == NULL)
 	{
 		printf("\nError! File not found");
@@ -321,15 +321,15 @@ void book()
 	system("cls");
 	printf("\n");
 	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
-	printf("\t\t%-55s %-15s %-15d %-15d\n\n", "Movie Name", "Movie Genre", "Movie Code", "Ticket Price");
+	printf("\t\t%-55s %-15s %-15s %-15s\n\n", "Movie Name", "Movie Genre", "Movie Code", "Ticket Price");
 	printf("\n");
-	printf("\t\t_________________________________________________________________________________");
+	printf("\t\t______________________________________________________________________________________________________");
 	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
 		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
 		printf("\n");
-		printf("\t\t_________________________________________________________________________________");
+		printf("\t\t______________________________________________________________________________________________________");
 		printf("\n");
 	}
 	fclose(fs);
@@ -376,7 +376,7 @@ void book()
 		printf("\n\n\t\tYour total expense for %d ticket is %d.",total_seat,total_amount);
 		printf("\n\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
 		
-		ufp=fopen("oldTransection.txt","a");
+		ufp=fopen("oldTransaction.txt","a+");
 		if(ufp == NULL)
 		{
 			printf("FIle not Found");
@@ -397,7 +397,7 @@ void reserved_list()
 	FILE *fp;
 
 	
-	fp = fopen("oldTransection.txt","r+");
+	fp = fopen("oldTransaction.txt","r+");
 	if(fp == NULL)
 	{
 		printf("file does not found !");
