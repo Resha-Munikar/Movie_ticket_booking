@@ -7,6 +7,7 @@
 struct record
 {
 	char name[50];
+	char genre[10];
 	int code;
 	int price;
 } addlist;
@@ -17,11 +18,19 @@ char re_delete[1];
 int select = 0;
 void add_movie();
 void view();
+void book();
+void reserved_list();
+//to book ticket
+int total_seat,total_amount;
+long long int mobile;
+char name[20];
+char a; 
+int movie_code; 
 void delete_movie();
 int code_exists(FILE *fs, int code);
+	FILE *fp, *fs,*ufp;
 int main()
 {
-	FILE *fp, *fs;
 retry:
 	system("COLOR 09");
 	printf("\t\t\t\t**************************************************\n");
@@ -66,8 +75,9 @@ retry:
 			printf("\n\t\t\t\tPress A. to add movie");
 			printf("\n\t\t\t\tPress B. to show movie list");
 			printf("\n\t\t\t\tPress C. to delete movie ");
-			printf("\n\t\t\t\tPress D. to go back yo main menu");
-			printf("\n\t\t\t\tPress E. to exit ");
+			printf("\n\t\t\t\tPress D. to view reserved movie details ");
+			printf("\n\t\t\t\tPress E. to go back to main menu");
+			printf("\n\t\t\t\tPress F. to exit ");
 		again:
 			fflush(stdin);
 			printf("\n\n\t\tEnter your choice : ");
@@ -87,10 +97,13 @@ retry:
 				goto menu;
 				break;
 			case 'D':
+				reserved_list();
+				goto menu;
+			case 'E':
 				system("cls");
 				goto retry;
 				break;
-			case 'E':
+			case 'F':
 				exit(0);
 			default:
 				printf("\n\t\tWrong choice.");
@@ -137,6 +150,8 @@ retry:
 			goto label;
 			break;
 		case 'B':
+			book();
+			goto label;
 			break;
 		case 'C':
 			break;
@@ -173,6 +188,9 @@ re_movie:
 	fflush(stdin);
 	printf("\n\t\tEnter movie name: ");
 	gets(addlist.name);
+	fflush(stdin);
+	printf("\n\t\tEnter movie genre: ");
+	gets(addlist.genre);
 	fflush(stdin);
 re_code:
 	printf("\n\t\tEnter movie code: ");
@@ -215,13 +233,13 @@ void view()
 	system("cls");
 	printf("\n");
 	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
-	printf("\t\t%-55s %-15s %-15s\n\n", "Movie Name", "Movie Code", "Ticket Price");
+	printf("\t\t%-55s %-15s %-15d %-15d\n\n", "Movie Name", "Movie Code", "Ticket Price");
 	printf("\n");
 	printf("\t\t_________________________________________________________________________________");
 	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
-		printf("\t\t %-55s %-15d %-15d", addlist.name, addlist.code, addlist.price);
+		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre,addlist.code, addlist.price);
 		printf("\n");
 		printf("\t\t_________________________________________________________________________________");
 		printf("\n");
@@ -290,4 +308,109 @@ int code_exists(FILE *fs, int code)
 		}
 	}
 	return code_found;
+}
+void book()
+{
+	FILE *fs;
+	fs = fopen("Details.txt", "r");
+	if (fs == NULL)
+	{
+		printf("\n\t\tError! File not found");
+		exit(0);
+	}
+	system("cls");
+	printf("\n");
+	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
+	printf("\t\t%-55s %-15s %-15d %-15d\n\n", "Movie Name", "Movie Genre", "Movie Code", "Ticket Price");
+	printf("\n");
+	printf("\t\t_________________________________________________________________________________");
+	printf("\n");
+	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
+	{
+		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
+		printf("\n");
+		printf("\t\t_________________________________________________________________________________");
+		printf("\n");
+	}
+	fclose(fs);
+	fflush(stdin);
+	getchar();
+	system("cls");
+	FILE *fp;
+	
+	printf("\n\n Enter movie code you want to book ticket for :");
+	scanf("%d",&movie_code);
+	fp = fopen("Details.txt","r");
+	if(fp == NULL)
+	{
+		printf("Error! File does not found !");
+		exit(0);
+
+	}
+	else
+	{	while (fread(&addlist, sizeof(struct record), 1, fp) == 1)
+		{
+			if(addlist.code==movie_code)
+			{	
+				printf("\n Record Found\n");
+				printf("\n\t\tCode ::%d",addlist.code);
+				printf("\n\t\tMovie name ::%s",addlist.name);
+				printf("\n\t\tMovie genre ::%s",addlist.genre);
+				printf("\n\t\tPrice of ticket::%d",addlist.price);
+			}
+		}
+	}
+
+	printf("\n\n\t* Fill Your Deatails  *");
+		fflush(stdin);
+		printf("\n\t\t Name :");
+		gets(name);
+		fflush(stdin);
+		printf("\n\t\t Mobile number :");
+		scanf("%lld",&mobile);
+		printf("\n\t\t Total number of tickets :");
+		scanf("%d",&total_seat);
+		
+		total_amount = addlist.price * total_seat;
+		
+		printf("\n\n\t\tYour total expense for %d ticket is %d.",total_seat,total_amount);
+		printf("\n\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
+		
+		ufp=fopen("oldTransection.txt","a");
+		if(ufp == NULL)
+		{
+			printf("FIle not Found");
+		}
+		else
+		{
+			fprintf(ufp,"%s %lld %d %d %s %d \n",name,mobile,total_seat,total_amount,addlist.name,addlist.price);
+			printf("\n Record insert Sucessfull to the old record file");
+		}
+		printf("\n");
+	fclose(ufp);
+	fclose(fs);
+	fclose(fp);
+}
+void reserved_list()
+{
+	char ch;
+	FILE *fp;
+
+	
+	fp = fopen("oldTransection.txt","r+");
+	if(fp == NULL)
+	{
+		printf("file does not found !");
+		exit(1);
+
+	}
+	else
+	{	
+		system("cls");
+		printf("\n\t\t");
+		while( ( ch = fgetc(fp) ) != EOF )
+		printf("%c",ch);
+		
+	}
+	fclose(fp);
 }
