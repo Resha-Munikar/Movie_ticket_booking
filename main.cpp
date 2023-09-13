@@ -179,7 +179,7 @@ void add_movie()
 {
 	FILE *fs;
 re_movie:
-	fs = fopen("Details.txt", "r+");
+	fs = fopen("Details.txt", "w+");
 	if (fs == NULL)
 	{
 		printf("\nError! File not found");
@@ -233,15 +233,15 @@ void view()
 	system("cls");
 	printf("\n");
 	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
-	printf("\t\t%-55s %-15s %-15d %-15d\n\n", "Movie Name", "Movie Code", "Ticket Price");
+	printf("\t\t%-55s %-15s %-15s %-15s\n\n", "Movie Name", "Movie Genre", "Movie Code", "Ticket Price");
 	printf("\n");
-	printf("\t\t_________________________________________________________________________________");
+	printf("\t\t________________________________________________________________________________________________");
 	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
 		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre,addlist.code, addlist.price);
 		printf("\n");
-		printf("\t\t_________________________________________________________________________________");
+		printf("\t\t_________________________________________________________________________________________________");
 		printf("\n");
 	}
 	fclose(fs);
