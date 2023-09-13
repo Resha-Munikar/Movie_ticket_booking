@@ -10,14 +10,10 @@ struct record
 	int code;
 	int price;
 } addlist;
-
 char ch;
 char choice;
 char re_add[1];
-int search = 0;
-int found;
-int i = 0;
-int n = 0;
+char re_delete[1];
 int select = 0;
 void add_movie();
 void view();
@@ -27,14 +23,15 @@ int main()
 {
 	FILE *fp, *fs;
 retry:
-	printf("\t************************************\n");
-	printf("\t\t====================\n");
-	printf("\t\tMOVIE TICKET BOOKING\n");
-	printf("\t\t====================\n");
-	printf("\t************************************\n");
-	printf("\n\t1. Admin");
-	printf("\n\t2. User");
-	printf("\n\nEnter your choice : ");
+	system("COLOR 09");
+	printf("\t\t\t\t**************************************************\n");
+	printf("\t\t\t\t\t\t====================\n");
+	printf("\t\t\t\t\t\tMOVIE TICKET BOOKING\n");
+	printf("\t\t\t\t\t\t====================\n");
+	printf("\t\t\t\t**************************************************\n");
+	printf("\n\t\t\t\t1. Admin");
+	printf("\n\t\t\t\t2. User");
+	printf("\n\n\t\tEnter your choice : ");
 	scanf("%d", &select);
 	switch (select)
 	{
@@ -49,31 +46,31 @@ retry:
 		fscanf(fp, "%s%s", uname, pwd);
 	flag:
 		fflush(stdin);
-		printf("\n\tEnter username : ");
+		printf("\n\t\tEnter username : ");
 		gets(un);
 		fflush(stdin);
-		printf("\n\tEnter password : ");
+		printf("\n\t\tEnter password : ");
 		gets(pw);
 		// comparing the username and password given by the user
 		if ((strcmp(uname, un) == 0) && (strcmp(pwd, pw) == 0))
 		{
-			printf("\n\tLogging in . . . .");
+			//printf("\n\t\tLogin successful!!!");
+			printf("\n");
+			printf("\n\t\t\t\t\t\tLogging in . . . .");
 			sleep(3);
 			system("cls");
-			printf("\n\t\tLogin successful!!!");
-			printf("\n");
-			printf("\n");
 		menu:
 			printf("\n");
-			printf("\t_______ADMIN OPTIONS_______\n");
+			printf("\t\t\t\t\t__________ADMIN OPTIONS__________\n");
 			printf("\n");
-			printf("\n\tPress A. to add movie");
-			printf("\n\tPress B. to show movie list");
-			printf("\n\tPress C. to delete movie ");
-			printf("\n\tPress D. to edit movie details ");
-			printf("\n\tPress E. to exit ");
+			printf("\n\t\t\t\tPress A. to add movie");
+			printf("\n\t\t\t\tPress B. to show movie list");
+			printf("\n\t\t\t\tPress C. to delete movie ");
+			printf("\n\t\t\t\tPress D. to go back yo main menu");
+			printf("\n\t\t\t\tPress E. to exit ");
+		again:
 			fflush(stdin);
-			printf("\n\nEnter your choice : ");
+			printf("\n\n\t\tEnter your choice : ");
 			scanf("%c", &choice);
 			switch (choice)
 			{
@@ -90,21 +87,23 @@ retry:
 				goto menu;
 				break;
 			case 'D':
+				system("cls");
+				goto retry;
 				break;
 			case 'E':
 				exit(0);
 			default:
-				printf("\nWrong choice.");
-				printf("\nEnter correct choice.");
-				goto menu;
+				printf("\n\t\tWrong choice.");
+				printf("\n\t\tEnter correct choice.");
+				goto again;
 			}
 		}
 		else
 		{
-			printf("\n\tWrong username or password.");
-			printf("\n\nDo you want to try again?");
+			printf("\n\t\tWrong username or password.");
+			printf("\n\n\t\tDo you want to try again?");
 			fflush(stdin);
-			printf("\nPress 'Y' to continue or 'N' to exit : ");
+			printf("\n\t\tPress 'Y' to continue or 'N' to exit : ");
 			x = getchar();
 			{
 				if (x == 'y' || x == 'Y')
@@ -121,14 +120,15 @@ retry:
 		break;
 	case 2:
 	label:
-		printf("\n\t_______USER OPTIONS_______");
+		printf("\n\t\t\t\t\t__________USER OPTIONS__________");
 		printf("\n");
-		printf("\n\tPress A. to View Movie List");
-		printf("\n\tPress B. to Book Ticket");
-		printf("\n\tPress C. to Cancel Ticket");
-		printf("\n\tPress D. to Exit");
+		printf("\n\t\t\t\tPress A. to View Movie List");
+		printf("\n\t\t\t\tPress B. to Book Ticket");
+		printf("\n\t\t\t\tPress C. to Cancel Ticket");
+		printf("\n\t\t\t\tPress D. to Go Back to Main Menu");
+		printf("\n\t\t\t\tPress E. to Exit");
 		fflush(stdin);
-		printf("\n\nEnter your choice : ");
+		printf("\n\n\t\tEnter your choice : ");
 		scanf("%c", &ch);
 		switch (ch)
 		{
@@ -140,16 +140,21 @@ retry:
 			break;
 		case 'C':
 			break;
-		case 'D':
+		case'D':
+			system("cls");
+			goto retry;
+			break;
+			
+		case 'E':
 			exit(0);
 		default:
-			printf("\nWrong choice.");
-			printf("\nEnter correct choice.");
+			printf("\n\t\tWrong choice.");
+			printf("\n\t\tEnter correct choice.");
 			goto label;
 		}
 	default:
-		printf("\nInvalid input.");
-		printf("\nEnter the correct choice.");
+		printf("\n\t\tInvalid input.");
+		printf("\n\t\tEnter the correct choice.");
 		printf("\n\n");
 		goto retry;
 	}
@@ -166,29 +171,29 @@ re_movie:
 		exit(0);
 	}
 	fflush(stdin);
-	printf("Enter movie name: ");
+	printf("\n\t\tEnter movie name: ");
 	gets(addlist.name);
 	fflush(stdin);
 re_code:
-	printf("Enter movie code: ");
+	printf("\n\t\tEnter movie code: ");
 	scanf("%d", &addlist.code);
 	if (code_exists(fs, addlist.code))
 	{
-		printf("\nThe movie with code %d already exists. Try another code.", addlist.code);
+		printf("\n\t\tThe movie with code %d already exists. Try another code.", addlist.code);
 		sleep(2);
 		goto re_code;
 	}
-	printf("Enter movie ticket price: ");
+	printf("\n\t\tEnter movie ticket price: ");
 	scanf("%d", &addlist.price);
 	fflush(stdin);
 	printf("\n");
 	fseek(fs, 0, SEEK_END);
 	fwrite(&addlist, sizeof(struct record), 1, fs);
 	fclose(fs);
-	printf("\nMovie added successfully.");
+	printf("\n\t\tMovie added successfully.");
 	sleep(2);
 	printf("\n");
-	printf("\nDo you want to add another movie?[Y/N] : ");
+	printf("\n\t\tDo you want to add another movie?[Y/N] : ");
 	scanf("%c", &re_add);
 	strlwr(re_add);
 	if (strcmp(re_add, "y") == 0)
@@ -204,19 +209,22 @@ void view()
 	fs = fopen("Details.txt", "r");
 	if (fs == NULL)
 	{
-		printf("\nError! File not found");
+		printf("\n\t\tError! File not found");
 		exit(0);
 	}
 	system("cls");
 	printf("\n");
-	printf("___________List of ongoing movies details___________\n\n ");
-	printf("%-20s %-15s %-15s\n\n", "Movie Name", "Movie Code", "Ticket Price");
-	printf("__________________________________________________________");
+	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
+	printf("\t\t%-55s %-15s %-15s\n\n", "Movie Name", "Movie Code", "Ticket Price");
+	printf("\n");
+	printf("\t\t_________________________________________________________________________________");
+	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
-		printf("\n %-20s %-15d %-15d", addlist.name, addlist.code, addlist.price);
+		printf("\t\t %-55s %-15d %-15d", addlist.name, addlist.code, addlist.price);
 		printf("\n");
-		printf("__________________________________________________________");
+		printf("\t\t_________________________________________________________________________________");
+		printf("\n");
 	}
 	fclose(fs);
 	fflush(stdin);
@@ -225,8 +233,9 @@ void view()
 }
 void delete_movie()
 {
+	int found = 0, search =0;
 	FILE *fp, *fs;
-	printf("\nEnter the code of movie you want to delete : ");
+	printf("\n\t\tEnter the code of movie you want to delete : ");
 	scanf("%d", &search);
 	fp = fopen("Details.txt", "r");
 	if (fp == NULL)
@@ -257,17 +266,16 @@ void delete_movie()
 	rename("temp.txt", "Details.txt");
 	if (found == 1)
 	{
-		printf("\nMovie with code %d is deleted successfully.", search);
+		printf("\n\t\tMovie with code %d is deleted successfully.", search);
 	}
 	else
 	{
-		printf("\nMovie with code %d not found.", search);
+		printf("\n\t\tMovie with code %d not found.", search);
 	}
-	found = 0;
+	found=0;
 	sleep(3);
 	system("cls");
 }
-
 int code_exists(FILE *fs, int code)
 {
 	struct record read_record;
@@ -281,6 +289,5 @@ int code_exists(FILE *fs, int code)
 			return code_found;
 		}
 	}
-
 	return code_found;
 }
