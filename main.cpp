@@ -1,6 +1,5 @@
 // Movie ticket booking using C
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h> //for sleep function
@@ -11,6 +10,15 @@ struct record
 	int code;
 	int price;
 } addlist;
+struct oldrecord 
+{
+	char person_name[50];
+	long long int mobile_number;
+	int seat_reserved;
+	int total_ticketprice;
+	char movie_name[50];
+	int price_per;
+}test;
 char ch;
 char choice;
 char re_add[1];
@@ -20,10 +28,6 @@ void add_movie();
 void view();
 void book();
 void reserved_list();
-//to book ticket
-int total_seat,total_amount;
-long long int mobile;
-char name[20];
 char a; 
 int movie_code; 
 void delete_movie();
@@ -98,7 +102,6 @@ retry:
 				break;
 			case 'D':
 				reserved_list();
-				system("cls");
 				goto menu;
 			case 'E':
 				system("cls");
@@ -152,7 +155,6 @@ retry:
 			break;
 		case 'B':
 			book();
-			system("cls");
 			goto label;
 			break;
 		case 'C':
@@ -325,22 +327,20 @@ void book()
 	printf("\t\t\t\t______________List of ongoing movies details______________\n\n ");
 	printf("\t\t%-55s %-15s %-15s %-15s\n\n", "Movie Name", "Movie Genre", "Movie Code", "Ticket Price");
 	printf("\n");
-	printf("\t\t______________________________________________________________________________________________________");
+	printf("\t______________________________________________________________________________________________________");
 	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
-		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
+		printf("\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
 		printf("\n");
-		printf("\t\t______________________________________________________________________________________________________");
+		printf("\t______________________________________________________________________________________________________");
 		printf("\n");
 	}
 	fclose(fs);
-	fflush(stdin);
-	getchar();
-	system("cls");
+	
 	FILE *fp;
 	
-	printf("\n\n Enter movie code you want to book ticket for :");
+	printf("\n\n\t Enter movie code you want to book ticket for :");
 	scanf("%d",&movie_code);
 	fp = fopen("Details.txt","r");
 	if(fp == NULL)
@@ -362,59 +362,69 @@ void book()
 			}
 		}
 	}
-
-	printf("\n\n\t* Fill Your Deatails  *");
-		fflush(stdin);
-		printf("\n\t\t Name :");
-		gets(name);
-		fflush(stdin);
-		printf("\n\t\t Mobile number :");
-		scanf("%lld",&mobile);
-		printf("\n\t\t Total number of tickets :");
-		scanf("%d",&total_seat);
-		
-		total_amount = addlist.price * total_seat;
-		
-		printf("\n\n\t\tYour total expense for %d ticket is %d.",total_seat,total_amount);
-		printf("\n\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
-		
-		ufp=fopen("oldTransaction.txt","a+");
+	fclose(fp);
+	ufp=fopen("oldTransaction.txt","r+");
 		if(ufp == NULL)
 		{
 			printf("FIle not Found");
 		}
-		else
+	printf("\n\n\t\t\t\t* _________________Fill Your Deatails_______________  *\n");
+		fflush(stdin);
+		printf("\n\t\t Name :");
+		gets(test.person_name);
+		fflush(stdin);
+		printf("\n\t\t Mobile number :");
+		scanf("%lld",&test.mobile_number);
+		ticketrewind:
+		printf("\n\t\t Total number of tickets :");
+		scanf("%d",&test.seat_reserved);
+		if(test.seat_reserved>10)
 		{
-			fprintf(ufp,"%s %lld %d %d %s %d \n",name,mobile,total_seat,total_amount,addlist.name,addlist.price);
-			printf("\n \t\tRecord insert Sucessfull to the old record file");
+			printf("\n\t->Sorry! You can't reserve above 10tickets at once. Try again.");
+			goto ticketrewind;
 		}
+		
+		test.total_ticketprice = addlist.price * test.seat_reserved;
+
+		printf("\n\t\tYour total expense for %d ticket is %d.",test.seat_reserved,test.total_ticketprice);
+		
+		strcpy(test.movie_name,addlist.name);
+		test.price_per=addlist.price;
+		fseek(fs, 0, SEEK_END);
+		fwrite(&test, sizeof(struct oldrecord), 1, ufp);
+		printf("\n\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
+		fclose(ufp);
+		printf("\n\t\t Record insert Sucessfull to the old record file");
+	
 		printf("\n");
-		sleep(2);
-	fclose(ufp);
-	fclose(fs);
-	fclose(fp);
+		fflush(stdin);
+	getchar();
 }
 void reserved_list()
 {
-	char ch;
 	FILE *fp;
 
-	
-	fp = fopen("oldTransaction.txt","r+");
+	fp = fopen("oldTransaction.txt","r");
 	if(fp == NULL)
 	{
-		printf("file does not found !");
-		exit(1);
+		printf("File does not found !");
+		exit(0);
 
 	}
-	else
-	{	
+	
 		system("cls");
 		printf("\n");
-		while( ( ch = fgetc(fp) ) != EOF )
-		printf("%c",ch);
-		
-	}
+		printf("\t\t\t\t______________List of reserved movies details______________\n\n ");
+		printf("\t\t%-10s %-25s %-22s %-15s %-20s %-15s\n\n", "Customer Name", " Customer Phone Number", "Total Seats Reserved", "Total price","Movie Name","Ticket price per seat");
+		printf("\n");
+		while (fread(&test, sizeof(struct oldrecord), 1, fp) == 1)
+		{
+			printf("\t\t %-15s %-25lld %-20d %-13d %-22s %-15d", test.person_name, test.mobile_number,test.seat_reserved, test.total_ticketprice,test.movie_name,test.price_per);
+			printf("\n");
+			printf("\t\t_________________________________________________________________________________________________________________________");
+			printf("\n");
+		}
+	
 	fclose(fp);
-	sleep(3);
+	getchar();
 }
