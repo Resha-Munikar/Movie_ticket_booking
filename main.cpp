@@ -98,6 +98,7 @@ retry:
 				break;
 			case 'D':
 				reserved_list();
+				system("cls");
 				goto menu;
 			case 'E':
 				system("cls");
@@ -151,6 +152,7 @@ retry:
 			break;
 		case 'B':
 			book();
+			system("cls");
 			goto label;
 			break;
 		case 'C':
@@ -384,9 +386,10 @@ void book()
 		else
 		{
 			fprintf(ufp,"%s %lld %d %d %s %d \n",name,mobile,total_seat,total_amount,addlist.name,addlist.price);
-			printf("\n Record insert Sucessfull to the old record file");
+			printf("\n \t\tRecord insert Sucessfull to the old record file");
 		}
 		printf("\n");
+		sleep(2);
 	fclose(ufp);
 	fclose(fs);
 	fclose(fp);
@@ -407,10 +410,11 @@ void reserved_list()
 	else
 	{	
 		system("cls");
-		printf("\n\t\t");
+		printf("\n");
 		while( ( ch = fgetc(fp) ) != EOF )
 		printf("%c",ch);
 		
 	}
 	fclose(fp);
+	sleep(3);
 }
