@@ -331,7 +331,7 @@ void book()
 	printf("\n");
 	while (fread(&addlist, sizeof(struct record), 1, fs) == 1)
 	{
-		printf("\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
+		printf("\t\t %-55s %-15s %-15d %-15d", addlist.name, addlist.genre, addlist.code, addlist.price);
 		printf("\n");
 		printf("\t______________________________________________________________________________________________________");
 		printf("\n");
