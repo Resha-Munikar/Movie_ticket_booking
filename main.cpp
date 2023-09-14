@@ -297,6 +297,7 @@ re_delete:
 	}
 	found=0;
 	printf("\n");
+	fflush(stdin);
 	printf("\n\t\tDo you want to delete another movie?[Y/N] : ");
 	scanf("%c", &choose);
 	strlwr(choose);
@@ -304,7 +305,7 @@ re_delete:
 	{
 		goto re_delete;
 	}
-	sleep(3);
+	sleep(1);
 	system("cls");
 }
 int code_exists(FILE *fs, int code)
