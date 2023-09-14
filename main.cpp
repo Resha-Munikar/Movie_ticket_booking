@@ -417,6 +417,7 @@ void reserved_list()
 		printf("\t\t\t\t______________List of reserved movies details______________\n\n ");
 		printf("\t\t%-10s %-25s %-22s %-15s %-20s %-15s\n\n", "Customer Name", " Customer Phone Number", "Total Seats Reserved", "Total price","Movie Name","Ticket price per seat");
 		printf("\n");
+		printf("\t\t_________________________________________________________________________________________________________________________");
 		while (fread(&test, sizeof(struct oldrecord), 1, fp) == 1)
 		{
 			printf("\t\t %-15s %-25lld %-20d %-13d %-22s %-15d", test.person_name, test.mobile_number,test.seat_reserved, test.total_ticketprice,test.movie_name,test.price_per);
