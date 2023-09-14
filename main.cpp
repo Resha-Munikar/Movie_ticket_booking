@@ -25,6 +25,7 @@ void view();
 void book();
 void reserved_list();
 void delete_movie();
+void cancel();
 int code_exists(FILE *fs, int code);
 char re_add[1];
 char choose[1];
@@ -158,6 +159,8 @@ retry:
 			goto label;
 			break;
 		case 'C':
+			cancel();
+			goto label;
 			break;
 		case'D':
 			system("cls");
@@ -428,4 +431,51 @@ void reserved_list()
 	fclose(fp);
 	fflush(stdin);
 	getchar();
+	system("cls");
+}
+void cancel()
+{
+	int found=0;
+	long long int cancel_code;
+	FILE *fp,*fs;
+	fp = fopen("oldTransaction.txt","r");
+	if(fp == NULL)
+	{
+		printf("File does not found !");
+		exit(0);
+	}
+	fs = fopen("Backup.txt", "w+");
+	if (fs == NULL)
+	{
+		printf("\nFile not found.");
+		exit(0);
+	}
+	printf("\n\t\tEnter your phone number: ");
+	scanf("%lld",&cancel_code);
+	while (fread(&test, sizeof(struct oldrecord), 1, fp))
+	{
+		if (test.mobile_number != cancel_code)
+		{
+			fwrite(&test, sizeof(struct oldrecord), 1, fs);
+		}
+		else
+		{
+			found = 1;
+		}
+	}
+	fclose(fp);
+	fclose(fs);
+	remove("oldTransaction.txt");
+	rename("Backup.txt", "oldTransaction.txt");
+	if (found == 1)
+	{
+		printf("\n\t\tMovie reservation has been cancelled successfully.");
+	}
+	else
+	{
+		printf("\n\t\tMovie reservation not found.");
+	}
+	found=0;
+	sleep(3);
+	system("cls");
 }
