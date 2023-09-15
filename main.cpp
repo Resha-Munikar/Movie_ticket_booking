@@ -420,13 +420,12 @@ void reserved_list()
 		printf("\t\t\t\t______________List of reserved movies details______________\n\n ");
 		printf("\t%-10s %-25s %-20s %-15s %-20s \n\n", "Customer Name", " Customer Phone Number", "Total Seats Reserved", "Total price","Movie Name");
 		printf("\n");
-		printf("\t\t_________________________________________________________________________________________________________________________");
+		printf("_________________________________________________________________________________________________________________________\n\n");
 		while (fread(&test, sizeof(struct oldrecord), 1, fp) == 1)
 		{
 			printf("\t%-10s %-25lld %-20d %-15d %-20s ", test.person_name, test.mobile_number,test.seat_reserved, test.total_ticketprice,test.movie_name);
 			printf("\n");
-			printf("\t\t_________________________________________________________________________________________________________________________");
-			printf("\n");
+			printf("_________________________________________________________________________________________________________________________\n\n");
 		}
 	fclose(fp);
 	fflush(stdin);
