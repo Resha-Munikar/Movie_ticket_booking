@@ -299,6 +299,7 @@ re_delete:
 	}
 	found=0;
 	printf("\n");
+	
 	fflush(stdin);
 	printf("\n\t\tDo you want to delete another movie?[Y/N] : ");
 	scanf("%c", &choose);
@@ -307,6 +308,7 @@ re_delete:
 	{
 		goto re_delete;
 	}
+
 	sleep(1);
 	system("cls");
 }
@@ -395,7 +397,6 @@ ticketrewind:
 	test.total_ticketprice = addlist.price * test.seat_reserved;
 	printf("\n\t\tYour total expense for %d ticket is %d.",test.seat_reserved,test.total_ticketprice);
 	strcpy(test.movie_name,addlist.name);
-	test.price_per=addlist.price;
 	fseek(fs, 0, SEEK_END);
 	fwrite(&test, sizeof(struct oldrecord), 1, ufp);
 	printf("\n\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
