@@ -18,7 +18,6 @@ struct oldrecord
 	int seat_reserved;
 	int total_ticketprice;
 	char movie_name[50];
-	int price_per;
 }test;
 void add_movie();
 void view();
