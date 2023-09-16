@@ -348,7 +348,9 @@ int code_exists(FILE *fs, int code)
 }
 void book()
 {
-	int movie_code; 
+	struct record check;
+	int movie_code=0; 
+	int check1=0;
 	FILE *fs,*fp,*ufp;
 	fs = fopen("Details.txt", "r");
 	if (fs == NULL)
@@ -388,50 +390,62 @@ code:
 	}
 	else
 	{
+		
 		while (fread(&addlist, sizeof(struct record), 1, fp) == 1)
 		{
-			if(addlist.code=movie_code)
+			if(addlist.code==movie_code)
 			{	
-				printf("\n\t Record Found\n");
-				printf("\n\t\tCode : %d",addlist.code);
-				printf("\n\t\tMovie name : %s",addlist.name);
-				printf("\n\t\tMovie genre : %s",addlist.genre);
-				printf("\n\t\tPrice of ticket: %d",addlist.price);
-				break;
+				check=addlist;
+				check1=1;
 			}
-			else
-			{
-				printf("\n\t\tWrong code. Please enter available code.\n");
-				goto code;
-			}
+	
 		}
-		printf("\n\n\t\t\t\t* _________________Fill Your Details_______________  *\n");
-		fflush(stdin);
-		printf("\n\t\t Name : ");
-		gets(test.person_name);
-		fflush(stdin);
-		printf("\n\t\t Mobile number : ");
-		scanf("%lld",&test.mobile_number);
-		ticketrewind:
-		printf("\n\t\t Total number of tickets : ");
-		scanf("%d",&test.seat_reserved);
-		if(test.seat_reserved>10)
-		{
-			printf("\n\t->Sorry! You can't reserve above 10tickets at once. Try again.");
-			goto ticketrewind;
-		}
-		test.total_ticketprice = addlist.price * test.seat_reserved;
-		printf("\n\t\tYour total expense for %d ticket is %d.",test.seat_reserved,test.total_ticketprice);
-		strcpy(test.movie_name,addlist.name);
-		fseek(fs, 0, SEEK_END);
-		fwrite(&test, sizeof(struct oldrecord), 1, ufp);
-		printf("\n\n\t\t\t\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
-		printf("\n\n\t\t\tRecord inserted sucessfully.");
-		printf("\n");
-		fflush(stdin);
-		getchar();
-		system("cls");
 	}
+	if(check1==1)
+	{	
+		printf("\n\t Record Found\n");
+		printf("\n\t\tCode : %d",check.code);
+		printf("\n\t\tMovie name : %s",check.name);
+		printf("\n\t\tMovie genre : %s",check.genre);
+		printf("\n\t\tPrice of ticket: %d",check.price);
+	}
+	else
+	{
+		printf("\n\t\tWrong choice. Please enter code of available movie.");
+		goto code;
+	}
+	printf("\n\n\t\t\t\t* _________________Fill Your Details_______________  *\n");
+	fflush(stdin);
+	printf("\n\t\t Name : ");
+	gets(test.person_name);
+	fflush(stdin);
+	numberrewind:
+	printf("\n\t\t Mobile number : ");
+	scanf("%lld",&test.mobile_number);
+	if(test.mobile_number>10)
+	{
+		printf("\n\t->Sorry! The number you enered is not correct. Try again.");
+		goto numberrewind;
+	}
+	ticketrewind:
+	printf("\n\t\t Total number of tickets : ");
+	scanf("%d",&test.seat_reserved);
+	if(test.seat_reserved>10)
+	{
+		printf("\n\t->Sorry! You can't reserve above 10tickets at once. Try again.");
+		goto ticketrewind;
+	}
+	test.total_ticketprice = check.price * test.seat_reserved;
+	printf("\n\t\tYour total expense for %d ticket is %d.",test.seat_reserved,test.total_ticketprice);
+	strcpy(test.movie_name,check.name);
+	fseek(ufp, 0, SEEK_END);
+	fwrite(&test, sizeof(struct oldrecord), 1, ufp);
+	printf("\n\n\t\t\t\t\t ***YOUR SEATS ARE RESERVED! ENJOY YOUR MOVIE!!*** \n");
+	printf("\n\n\t\t\tRecord inserted sucessfully.");
+	printf("\n");
+	fflush(stdin);
+	getchar();
+	system("cls");
 
 	fclose(fs);
 	fclose(fp);
@@ -452,6 +466,7 @@ void reserved_list()
 		printf("\t\t%-25s %-25s %-25s %-20s %-20s \n\n", "Customer Name", " Customer Phone Number", "Total Seats Reserved", "Total price","Movie Name");
 		printf("\n");
 		printf("\t\t____________________________________________________________________________________________________________________________________\n\n");
+	
 		while (fread(&test, sizeof(struct oldrecord), 1, fp) == 1)
 		{
 			printf("\t\t%-25s %-25lld %-25d %-20d %-20s ", test.person_name, test.mobile_number,test.seat_reserved, test.total_ticketprice,test.movie_name);
@@ -481,6 +496,7 @@ void cancel()
 		printf("\nFile not found.");
 		exit(0);
 	}
+	reserved_list();
 	printf("\n\t\tEnter your phone number: ");
 	scanf("%lld",&cancel_code);
 	while (fread(&test, sizeof(struct oldrecord), 1, fp))
