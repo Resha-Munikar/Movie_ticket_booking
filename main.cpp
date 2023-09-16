@@ -404,7 +404,7 @@ code:
 				goto code;
 			}
 		}
-		printf("\n\n\t\t\t\t* _________________Fill Your Deatails_______________  *\n");
+		printf("\n\n\t\t\t\t* _________________Fill Your Details_______________  *\n");
 		fflush(stdin);
 		printf("\n\t\t Name : ");
 		gets(test.person_name);
