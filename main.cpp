@@ -464,6 +464,7 @@ void reserved_list()
 }
 void cancel()
 {
+	system("cls");
 	int found=0;
 	long long int cancel_code;
 	FILE *fp,*fs;
