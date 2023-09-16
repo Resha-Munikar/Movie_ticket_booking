@@ -137,6 +137,7 @@ retry:
 		break;
 	case 2:
 	label:
+		system("cls");
 		printf("\n\t\t\t\t\t__________USER OPTIONS__________");
 		printf("\n");
 		printf("\n\t\t\t\tPress A. to View Movie List");
