@@ -419,14 +419,9 @@ code:
 	printf("\n\t\t Name : ");
 	gets(test.person_name);
 	fflush(stdin);
-	numberrewind:
 	printf("\n\t\t Mobile number : ");
 	scanf("%lld",&test.mobile_number);
-	if(test.mobile_number>10)
-	{
-		printf("\n\t->Sorry! The number you enered is not correct. Try again.");
-		goto numberrewind;
-	}
+
 	ticketrewind:
 	printf("\n\t\t Total number of tickets : ");
 	scanf("%d",&test.seat_reserved);
@@ -496,7 +491,7 @@ void cancel()
 		printf("\nFile not found.");
 		exit(0);
 	}
-	reserved_list();
+
 	printf("\n\t\tEnter your phone number: ");
 	scanf("%lld",&cancel_code);
 	while (fread(&test, sizeof(struct oldrecord), 1, fp))
